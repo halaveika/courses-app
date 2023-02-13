@@ -1,5 +1,5 @@
-<app-course-card [title]="title" [description]="description" [creationDate]="creationDate" [duration]="duration" [authors]="authors" [editable]="editable">
-  <app-button> Show course </app-button>
-  <app-button *ngIf="editable"> Edit </app-button>
-  <app-button *ngIf="editable"> Remove </app-button>
+<app-course-card [title]="title" [description]="description" [creationDate]="creationDate" [duration]="duration" [authors]="authors">
+  <app-button  label='Show course'></app-button>
+  <app-button *ngIf="editable" label='Edit'></app-button>
+  <app-button *ngIf="editable" label='Remove'></app-button>
 </app-course-card>

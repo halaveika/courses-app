@@ -11,11 +11,14 @@ export class CourseCardComponent {
   @Input() creationDate: Date = new Date();
   @Input() duration: number = 0;
   @Input() authors: string[] = [];
-  @Input() editable: boolean = true;
 
   formatDuration(duration: number): string {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
     return `${hours}:${minutes.toString().padStart(2, '0')} hours`;
+  }
+
+  formatDate(date:Date): string {
+    return date.toLocaleDateString().replace(/\//g, ".");
   }
 }
