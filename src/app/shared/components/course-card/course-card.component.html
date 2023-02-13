@@ -14,9 +14,7 @@
             <div><b>Created: </b>{{ creationDate }}</div>
         </div>
         <div class="course-card__info-actions">
-          <app-button>Show course</app-button>
-          <app-button *ngIf="editable">Edit</app-button>
-          <app-button *ngIf="editable">Remove</app-button>
+          <ng-content></ng-content>
         </div>
     </div>
 </div>
