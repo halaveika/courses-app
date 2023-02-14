@@ -8,8 +8,14 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent {
-  @Input() label: string = 'button';
+  @Input() label: string = '';
+  @Input() icon: string = '';
+  iconConf:any;
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
+  }
+
+  ngOnInit() {
+    this.iconConf = ['fas', this.icon]
   }
 }
