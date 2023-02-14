@@ -4,6 +4,9 @@
                      [creationDate]="course.creationDate"
                      [duration]="course.duration"
                      [authors]="course.authors"
-                     [editable]="editable">
-      <ng-content select="[course-actions]"></ng-content>
+                     [editable]="editable"
+                     (show)="onCourseAction('show', course.id)"
+                     (delete)="onCourseAction('delete',course.id)"
+                     (edit)="onCourseAction('edit',course.id)"
+                     >
     </app-course>

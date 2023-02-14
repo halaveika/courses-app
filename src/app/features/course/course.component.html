@@ -1,5 +1,5 @@
 <app-course-card [title]="title" [description]="description" [creationDate]="creationDate" [duration]="duration" [authors]="authors">
-  <app-button  label='Show course'></app-button>
-  <app-button *ngIf="editable" icon="trash-alt"></app-button>
-  <app-button *ngIf="editable" icon="edit"></app-button>
+  <app-button  label='Show course' (click)="onShowClicked()"></app-button>
+  <app-button *ngIf="editable" icon="trash-alt" (click)="onDeleteClicked()"></app-button>
+  <app-button *ngIf="editable" icon="edit" (click)="onEditClicked()"></app-button>
 </app-course-card>

@@ -13,6 +13,7 @@ import {
   CourseFormComponent,
 } from "./components";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 
 const components = [
   HeaderComponent,
@@ -23,11 +24,12 @@ const components = [
   LoginFormComponent,
   RegistrationFormComponent,
   CourseFormComponent,
-  ModalComponent
+  ModalComponent,
+  ConfirmModalComponent
 ];
 
 @NgModule({
-  declarations: [components],
+  declarations: [components, ConfirmModalComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,

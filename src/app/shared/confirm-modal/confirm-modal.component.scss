@@ -1,0 +1,53 @@
+.confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+
+  .modal-content {
+    background-color: #ffffff;
+    padding: 20px;
+    max-width: 500px;
+    max-height: 500px;
+    width: 50vw;
+    height: auto;
+    overflow-y: auto;
+    text-align: center;
+    position: relative;
+
+    .close-btn {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+
+      app-button {
+        width: 135px;
+        margin: 0 5px;
+      }
+    }
+  }
+}

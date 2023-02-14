@@ -9,7 +9,8 @@
   <app-info [text]="text" [title]="title">
     <app-button label="add new course"></app-button>
   </app-info>
-  <app-courses *ngIf="isLogged"></app-courses>
+  <app-courses *ngIf="isLogged"  (courseAction)="onCourseActionExecut($event)" [courses]="courses">
+  </app-courses>
   <!-- Course Card component -->
   <!-- <app-course-card></app-course-card> -->
   <!-- Login Form component -->
@@ -21,3 +22,5 @@
   <!-- Modal component -->
   <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
 </div>
+<app-confirm-modal *ngIf="showModal" [title]="modalConfig.title" [message]="modalConfig.message" [okButtonText]="modalConfig.okButtonText" [cancelButtonText]="modalConfig.cancelButtonText" (modalResult)="onModalResult($event)">
+</app-confirm-modal>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';;
+import { Component, Input, Output, EventEmitter } from '@angular/core';;
 
 @Component({
   selector: 'app-course',
@@ -12,4 +12,20 @@ export class CourseComponent {
   @Input() duration: number = 0;
   @Input() authors: string[] = [];
   @Input() editable: boolean = true;
+  @Output() delete = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<string>();
+  @Output() show = new EventEmitter<string>();
+
+  onDeleteClicked() {
+    this.delete.emit();
+  }
+
+  onEditClicked() {
+    this.edit.emit();
+  }
+
+  onShowClicked() {
+    this.show.emit();
+  }
+
 }
