@@ -20,4 +20,8 @@
       margin-left: 26px;
     }
   }
+  @media screen and (max-width:498px) {
+    flex-direction: column;
+    height: fit-content;
+  }
 }

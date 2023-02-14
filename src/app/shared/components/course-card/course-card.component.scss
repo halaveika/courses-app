@@ -40,4 +40,18 @@
       max-width: 320px;
     }
   }
+
+  @media (max-width:768px) {
+    padding: 12px;
+    flex-direction: column;
+
+    &__info {
+      margin-left: 0;
+
+      &-actions {
+        max-width: 100%;
+        flex-wrap: nowrap;
+      }
+    }
+  }
 }
