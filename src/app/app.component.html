@@ -6,8 +6,10 @@
   <!-- Search component -->
   <!--<app-search></app-search>-->
   <!-- Info component -->
-  <app-info></app-info>
-  <app-courses></app-courses>
+  <app-info [text]="text" [title]="title">
+    <app-button label="add new course"></app-button>
+  </app-info>
+  <app-courses *ngIf="isLogged"></app-courses>
   <!-- Course Card component -->
   <!-- <app-course-card></app-course-card> -->
   <!-- Login Form component -->
