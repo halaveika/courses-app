@@ -1,10 +1,13 @@
-<app-header></app-header>
+<app-header>
+  <span> {{ user }} </span>
+  <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="loginLogout()" [ngStyle]="{'width': '140px', 'margin-left': '20px'}"></app-button>
+</app-header>
 <div class="app-root">
-  <app-courses></app-courses>
   <!-- Search component -->
   <!--<app-search></app-search>-->
   <!-- Info component -->
-  <!--<app-info></app-info>-->
+  <app-info></app-info>
+  <app-courses></app-courses>
   <!-- Course Card component -->
   <!-- <app-course-card></app-course-card> -->
   <!-- Login Form component -->

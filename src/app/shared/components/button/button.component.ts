@@ -10,6 +10,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 export class ButtonComponent {
   @Input() label: string = '';
   @Input() icon: string = '';
+  @Input() styles: string = '';
   iconConf:any;
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
