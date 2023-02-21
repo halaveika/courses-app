@@ -1,31 +1,47 @@
 <h2 class="text-align-center">Login</h2>
 <div class="app-plate">
   <div class="login-form">
-    <div>
-      <div class="form__control">
-        <label for="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          placeholder="Input text"
-        />
+    <form #loginForm="ngForm" (ngSubmit)="submitForm()">
+      <div>
+        <div class="form__control">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Input text"
+            [(ngModel)]="email"
+            required
+            appEmailValidator
+          />
+          <div *ngIf="loginForm.submitted || loginForm.controls['email']?.touched">
+            <div *ngIf="loginForm.controls['email'].errors?.['required']">Email is required</div>
+            <div *ngIf="loginForm.controls['email'].errors?.['invalidEmail']">Invalid email</div>
+          </div>
+        </div>
+        <div class="form__control">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Input text"
+            [(ngModel)]="password"
+            required
+          />
+          <div *ngIf="loginForm.submitted || loginForm.controls['password']?.touched">
+            <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is required</div>
+          </div>
+        </div>
       </div>
-      <div class="form__control">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Input text"
-        />
+      <div>
+        <div class="form__action">
+          <button type="submit">login</button>
+        </div>
+        <div class="form__text">
+          If you don't have an account you may <strong>Registration</strong>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="form__action">
-        <app-button></app-button>
-      </div>
-      <div class="form__text">
-        If you don't have an account you may <strong>Registration</strong>
-      </div>
-    </div>
+    </form>
   </div>
 </div>

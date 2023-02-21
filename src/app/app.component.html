@@ -14,9 +14,9 @@
   <!-- Course Card component -->
   <!-- <app-course-card></app-course-card> -->
   <!-- Login Form component -->
-  <!--<app-login-form></app-login-form>-->
+  <app-login-form *ngIf="!isLogged && isRegistred" (loginSubmitted)="onLoginSubmitted($event)"></app-login-form>
   <!-- Login Form component -->
-  <!--<app-registration-form></app-registration-form>-->
+  <app-registration-form *ngIf="!isRegistred && !isLogged"></app-registration-form>
   <!-- Login Form component -->
   <!--<app-course-form></app-course-form>-->
   <!-- Modal component -->

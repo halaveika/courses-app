@@ -27,6 +27,7 @@ export class AppComponent {
   text: string =  emptyInfo.text;
   user: string = '';
   isLogged: boolean = false;
+  isRegistred: boolean = true;
   showModal: boolean = false;
   currentCourseId: string = '';
   modalConfig = {
@@ -84,5 +85,12 @@ export class AppComponent {
       default:
         break;
     }
+  }
+
+  onLoginSubmitted(submittedData: {email: string, password: string}) {
+    console.log('onLoginSubmitted',submittedData)
+    this.isLogged = true;
+    this.user = submittedData.email;
+    this.setInfo(mockInfo);
   }
 }

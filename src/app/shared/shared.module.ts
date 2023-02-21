@@ -14,6 +14,7 @@ import {
 } from "./components";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { EmailValidatorDirective } from './directives/email-validator.directive';
 
 const components = [
   HeaderComponent,
@@ -29,13 +30,13 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [components, ConfirmModalComponent],
+  declarations: [components, ConfirmModalComponent,EmailValidatorDirective],
   imports: [
     CommonModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [components]
+  exports: [components,EmailValidatorDirective]
 })
 export class SharedModule { }

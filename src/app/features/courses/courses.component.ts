@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Course } from 'src/app/shared/models/course-type';
-import { mockedCourseList} from '../../shared/mocks/mockedCourseList';
 
 @Component({
   selector: 'app-courses',
