@@ -15,7 +15,7 @@
             #email="ngModel"
             appEmailValidator
           />
-          <div *ngIf="loginForm.submitted || loginForm.controls['email']?.touched">
+          <div *ngIf="loginForm.submitted">
             <div *ngIf="loginForm.controls['email'].errors?.['required']">Email is required</div>
             <div *ngIf="loginForm.controls['email'].errors?.['invalidEmail']">Invalid email</div>
           </div>

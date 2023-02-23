@@ -43,3 +43,7 @@ h2 {
   margin-bottom: 36px;
 }
 
+:disabled {
+  cursor: default !important;
+  background: grey !important;
+}

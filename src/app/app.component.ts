@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { mockedCourseList} from './shared/mocks/mockedCourseList';
 import { Course } from 'src/app/shared/models/course-type';
+import {LoginAction} from 'src/app/shared/models/loginAction-type'
+import { LoginModel } from './shared/models/loginModel-type';
 
 type InfoData = {
   title: string,
@@ -37,6 +39,7 @@ export class AppComponent {
     cancelButtonText: 'CLOSE',
   }
   courses: Course[] = mockedCourseList;
+  private users:LoginModel[] = [];
 
   setInfo(infoData:InfoData) {
     this.title = infoData.title;
@@ -75,12 +78,39 @@ export class AppComponent {
     }
   }
 
-  onLoginActions(submittedData: {email: string, password: string}) {
-    console.log('onLoginSubmitted',submittedData)
-    this.isLogged = true;
-    this.isRegistred = true;
-    this.user = submittedData.email;
-    this.setInfo(mockInfo);
+  onLoginActions({action, payload: { name, email, password }}: LoginAction) {
+    switch (action) {
+      case 'login':
+        {
+          const user = this.users.filter(user => user.email === email && user.password === password);
+          if(user.length) {
+            this.user = user[0].name!;
+            this.isLogged = true;
+            this.isRegistred = true;
+            this.setInfo(mockInfo);
+          } else {
+            this.isLogged = false;
+            this.isRegistred = false;
+          }
+        }
+        break;
+      case 'register':
+        {
+          const user = this.users.filter(user => user.email === email)[0];
+          if(user) {
+            user.name = name;
+            user.password = password;
+            user.email = email;
+          } else {
+            this.users.push({ name, email, password });
+          }
+          this.isLogged = false;
+          this.isRegistred = true;
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   onLoginViews(view:string) {

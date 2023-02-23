@@ -12,10 +12,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  .form__text strong {
-    cursor: pointer;
-    &:hover {
-      color: #016486;
+  .form__text {
+    margin:  10px auto 0;
+    strong {
+      cursor: pointer;
+      &:hover {
+        color: #016486;
+      }
     }
   }
 }
@@ -27,6 +30,10 @@
 .app-plate {
   width: fit-content;
   min-height: auto;
+}
+
+.form__action {
+  margin:  0 auto;
 }
 
 button[type="submit"] {

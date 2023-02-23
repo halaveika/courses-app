@@ -5,28 +5,23 @@
   margin: 0 auto;
 }
 
-.registration-form {
-  width: 260px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .app-plate {
   width: fit-content;
   min-height: auto;
-
-  .form__action {
+  .registration-form {
+    max-width: 260px;
+    width: fit-content;
     margin: 0 auto;
-  }
-
-  .form__text {
-    margin: 0 auto;
-    strong {
-      cursor: pointer;
-      &:hover {
-        color: #016486;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .form__text {
+      margin:  10px auto 0;
+      strong {
+        cursor: pointer;
+        &:hover {
+          color: #016486;
+        }
       }
     }
   }
@@ -34,6 +29,10 @@
 
 .text-align-center {
   margin: 10px auto;
+}
+
+.form__action {
+  margin:  0 auto;
 }
 
 button[type="submit"] {
@@ -54,4 +53,3 @@ button[type="submit"] {
       background: #016486;
   }
 }
-
