@@ -41,7 +41,7 @@
           <button type="submit" [disabled]="!loginForm.form.valid">login</button>
         </div>
         <div class="form__text">
-          If you don't have an account you may <strong>Registration</strong>
+          If you don't have an account you may <strong (click)="onRegister()">Registration</strong>
         </div>
       </div>
     </form>

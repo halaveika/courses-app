@@ -8,11 +8,16 @@ import { LoginModel } from '../../models/loginModel-type';
 })
 export class LoginFormComponent {
   @Output() loginSubmitted = new EventEmitter<{ email: string, password: string }>();
+  @Output() register = new EventEmitter<string>();
   loginModel: LoginModel = {email:'',password: ''}
 
   onSubmit() {
     if (this.loginModel.email && this.loginModel.password) {
       this.loginSubmitted.emit(this.loginModel);
     }
+  }
+
+  onRegister() {
+    this.register.emit('register');
   }
 }

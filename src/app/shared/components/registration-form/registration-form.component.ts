@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-registration-form',
@@ -6,4 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./registration-form.component.scss'],
 })
 export class RegistrationFormComponent {
+  @Output() login = new EventEmitter<string>();
+
+  onLogin() {
+    this.login.emit('login');
+  }
 }

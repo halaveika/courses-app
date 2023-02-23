@@ -38,18 +38,6 @@ export class AppComponent {
   }
   courses: Course[] = mockedCourseList;
 
-  loginLogout() {
-    if(this.isLogged) {
-      this.isLogged = false;
-      this.user = '';
-      this.setInfo(emptyInfo)
-      return;
-    }
-      this.isLogged = true;
-      this.user = 'user';
-      this.setInfo(mockInfo)
-  }
-
   setInfo(infoData:InfoData) {
     this.title = infoData.title;
     this.text = infoData.text;
@@ -87,10 +75,35 @@ export class AppComponent {
     }
   }
 
-  onLoginSubmitted(submittedData: {email: string, password: string}) {
+  onLoginActions(submittedData: {email: string, password: string}) {
     console.log('onLoginSubmitted',submittedData)
     this.isLogged = true;
+    this.isRegistred = true;
     this.user = submittedData.email;
     this.setInfo(mockInfo);
+  }
+
+  onLoginViews(view:string) {
+    switch (view) {
+      case 'login':
+        this.isRegistred = true;
+        this.isLogged = false;
+        console.log(view);
+        break;
+      case 'register':
+        this.isLogged = false;
+        this.isRegistred = false;
+        console.log(view);
+        break;
+      case 'logout':
+        this.isLogged = false;
+        this.isRegistred = true;
+        this.user = '';
+        this.setInfo(emptyInfo)
+        console.log(view);
+        break;
+      default:
+        break;
+    }
   }
 }
