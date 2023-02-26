@@ -8,6 +8,9 @@
 .app-plate {
   width: fit-content;
   min-height: auto;
+  .form__control {
+    position: relative;
+  }
   .registration-form {
     max-width: 260px;
     width: fit-content;

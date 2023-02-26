@@ -30,6 +30,9 @@
 .app-plate {
   width: fit-content;
   min-height: auto;
+  .form__control {
+    position: relative;
+  }
 }
 
 .form__action {

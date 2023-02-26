@@ -28,8 +28,8 @@
             placeholder="Your password"
             [(ngModel)]="loginModel.password"
             name="password"
-            #password="ngModel"
             required
+            togglePassword
           />
           <div *ngIf="loginForm.submitted || loginForm.controls['password']?.touched">
             <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is required</div>

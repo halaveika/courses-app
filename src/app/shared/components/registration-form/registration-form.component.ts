@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmailValidatorDirective } from '../../../shared/directives/email-validator.directive';
 import { LoginAction } from '../../models/loginAction-type';
-import { LoginModel } from '../../models/loginModel-type';
 
 @Component({
   selector: 'app-registration-form',
@@ -12,12 +11,12 @@ import { LoginModel } from '../../models/loginModel-type';
 export class RegistrationFormComponent {
   registrationForm: FormGroup;
   submitted = false;
+  togglePassword = false;
   @Output() loginSubmitted = new EventEmitter<LoginAction>();
   @Output() login = new EventEmitter<string>();
 
   constructor(private formBuilder: FormBuilder) {
     this.registrationForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, new EmailValidatorDirective()]],
       password: ['', [Validators.required]],
     });

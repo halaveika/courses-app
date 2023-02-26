@@ -51,3 +51,10 @@ h2 {
 .error__message {
   color: #FF0000;
 }
+
+.toggle-btn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  cursor: pointer;
+}

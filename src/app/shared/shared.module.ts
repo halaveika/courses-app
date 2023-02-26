@@ -17,6 +17,7 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { EmailValidatorDirective } from './directives/email-validator.directive';
 import { DurationPipe } from './pipes/duration.pipe';
 import { CreationDatePipe } from './pipes/creation-date.pipe';
+import { TogglePasswordDirective } from './directives/toggle-password.directive';
 
 const components = [
   HeaderComponent,
@@ -32,13 +33,13 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [components, ConfirmModalComponent,EmailValidatorDirective,DurationPipe,CreationDatePipe],
+  declarations: [components, ConfirmModalComponent,EmailValidatorDirective,DurationPipe,CreationDatePipe,TogglePasswordDirective],
   imports: [
     CommonModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [components,EmailValidatorDirective,DurationPipe,CreationDatePipe]
+  exports: [components,EmailValidatorDirective,DurationPipe,CreationDatePipe,TogglePasswordDirective]
 })
 export class SharedModule { }
