@@ -1,18 +1,17 @@
 <!-- Replace ::text:: with your code -->
 <h2>Create / Edit Course</h2>
-<form>
+<form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
   <div class="app-plate">
     <div class="course">
       <h3>Main Info</h3>
-      <div class="form__control">
+      <div class="form__control" [class.error]="courseForm.get('title')?.invalid && (submitted || courseForm.get('title')?.touched)">
         <label for="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          placeholder="Input text"
-        />
+        <input type="text" id="title" placeholder="Input text" formControlName="title" />
+        <div class="error__message" *ngIf="courseForm.get('title')?.invalid && (submitted || courseForm.get('title')?.touched)">
+          Title is required and should be at least 3 characters long
+        </div>
       </div>
-      <div class="form__control">
+      <div class="form__control" [class.error]="courseForm.get('description')?.invalid && (submitted || courseForm.get('description')?.touched)">
         <label for="description">Description</label>
         <textarea
           id="description"
@@ -20,39 +19,44 @@
           placeholder="Input text"
           rows="4"
           cols="5"
+          formControlName="description"
         ></textarea>
+        <div class="error__message" *ngIf="courseForm.get('description')?.invalid && (submitted || courseForm.get('description')?.touched)">
+          Description is required and should be at least 10 characters long
+        </div>
       </div>
       <div class="separator"></div>
       <h3>Authors</h3>
       <div class="form__control">
-        <div class="course__flex">
-          <input
-            type="text"
-            id="author"
-            placeholder="Input Author Name"
-          />
-          <app-button></app-button>
+        <label for="name">Author Name</label>
+        <div class="course__flex" formGroupName="newAuthor">
+          <input type="text" id="name" placeholder="Input Author Name" formControlName="name" />
+          <app-button type="button" [label]="'Create Author'"  [disabled]="!this.courseForm.get('newAuthor.name')!.value || isAuthorButtonDisabled(newAuthor)"
+            (click)="addAuthor()"></app-button>
         </div>
-        <div class="course__authors">
-          ::Authors::
+        <label>Authors list</label>
+        <div class="course__authors" formArrayName="authors">
+          <div *ngFor="let author of authors.value; let i = index">
+            <span class="course__authors-item">{{ author.name }} <fa-icon class="close-btn course__icon"
+                icon="close" (click)="removeAuthor(i)"></fa-icon></span>
+          </div>
         </div>
       </div>
       <div class="separator"></div>
       <h3>Duration</h3>
-      <div class="form__control">
+      <div class="form__control" [class.error]="courseForm.get('duration')?.invalid && (submitted || courseForm.get('duration')?.touched)">
+        <label for="duration">Duration</label>
         <div class="course__flex">
-          <input
-            type="number"
-            id="duration"
-            placeholder="Input duration"
-          />
-          <div class="course__duration">
-            ::Duration::
-          </div>
+          <input type="number" id="duration" placeholder="Input duration" formControlName="duration" />
+          <div class="course__duration">{{ courseForm.get('duration')?.value }} hours</div>
+        </div>
+        <div class="error__message" *ngIf="courseForm.get('duration')?.invalid && (submitted || courseForm.get('duration')?.touched)">
+          Duration should be a non-negative number
         </div>
       </div>
       <div class="form__action">
-        <app-button></app-button>
+        <app-button type="reset" [label]="'Cansel'" [styles]="'width: 143.83px;'"></app-button>
+        <app-button type="submit" [label]="'Create Course'" [disabled]="!courseForm.valid"></app-button>
       </div>
     </div>
   </div>

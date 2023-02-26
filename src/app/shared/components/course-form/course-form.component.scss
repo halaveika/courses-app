@@ -22,16 +22,31 @@
   }
 
   &__authors {
+    max-width: 90vw;
     margin-top: 8px;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 
     &-item {
       margin-right: 10px;
+      display: flex;
+      align-items: center
     }
   }
 
   &__icon {
     margin-left: 4px;
     cursor: pointer;
+  }
+
+  .form__action {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  label {
+    font-weight: normal;
+    font-size: 1rem;
   }
 }

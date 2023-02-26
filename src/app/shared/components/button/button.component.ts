@@ -11,6 +11,8 @@ export class ButtonComponent {
   @Input() label: string = '';
   @Input() icon: string = '';
   @Input() styles: string = '';
+  @Input() disabled = false;
+  @Input() type: string = 'button';
   iconConf:any;
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
