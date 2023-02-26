@@ -24,12 +24,12 @@ export class CourseFormComponent implements OnInit {
 
   ngOnInit() {
     this.courseForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
+      title: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9]{3,}$/)]],
+      description: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9]{10,}$/)]],
       duration: [0, [Validators.required, Validators.min(0)]],
       authors: this.fb.array([]),
       newAuthor: this.fb.group({
-        name: ['', [Validators.pattern(/^[a-zA-Z0-9]+$/),]]
+        name: ['', [Validators.pattern(/^[a-zA-Z0-9]{6,}$/),]]
       })
     });
 

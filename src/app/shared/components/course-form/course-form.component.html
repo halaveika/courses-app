@@ -34,6 +34,9 @@
           <app-button type="button" [label]="'Create Author'"  [disabled]="!this.courseForm.get('newAuthor.name')!.value || isAuthorButtonDisabled(newAuthor)"
             (click)="addAuthor()"></app-button>
         </div>
+        <div class="error__message" *ngIf="courseForm.get('newAuthor.name')?.invalid && (submitted || courseForm.get('newAuthor.name')?.touched)">
+          Author name should be at least 6 characters long
+        </div>
         <label>Authors list</label>
         <div class="course__authors" formArrayName="authors">
           <div *ngFor="let author of authors.value; let i = index">
@@ -48,7 +51,7 @@
         <label for="duration">Duration</label>
         <div class="course__flex">
           <input type="number" id="duration" placeholder="Input duration" formControlName="duration" />
-          <div class="course__duration">{{ courseForm.get('duration')?.value }} hours</div>
+          <div class="course__duration">{{ courseForm.get('duration')?.value | duration }}</div>
         </div>
         <div class="error__message" *ngIf="courseForm.get('duration')?.invalid && (submitted || courseForm.get('duration')?.touched)">
           Duration should be a non-negative number
