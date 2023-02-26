@@ -39,6 +39,7 @@ export class AppComponent {
     cancelButtonText: 'CLOSE',
   }
   courses: Course[] = mockedCourseList;
+  filteredCourses: Course[] = this.courses;
   private users:LoginModel[] = [];
 
   setInfo(infoData:InfoData) {
@@ -62,6 +63,7 @@ export class AppComponent {
     this.onDeleteConfirmed(result)}
 
   onCourseActionExecut({action, payload}:{action: string, payload: any}) {
+    console.log('onCourseActionExecut',action,payload)
     switch (action) {
       case 'show':
         console.log('show',payload.courseId)
@@ -73,8 +75,9 @@ export class AppComponent {
       case 'edit':
         console.log('edit',payload.courseId)
         break;
-      case 'seacrh':
+      case 'search':
         console.log('seacrh',payload.title)
+        this.filteredCourses = this.courses.filter(course => course.title.toLocaleLowerCase().includes(payload.title.toLocaleLowerCase()))
         break;
       default:
         break;
