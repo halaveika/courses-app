@@ -1,10 +1,10 @@
 <app-header>
-  <span> {{ user }} </span>
-  <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="onLoginViews('logout')" [ngStyle]="{'width': '140px', 'margin-left': '20px'}"></app-button>
+  <span class="app-header__user"> {{ user }} </span>
+  <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="onLoginViews('logout')"></app-button>
 </app-header>
 <div class="app-root">
   <!-- Search component -->
-  <!--<app-search></app-search>-->
+  <app-search placeholder="Search courses" (searchEvent)="onCourseActionExecut($event)"></app-search>
   <!-- Info component -->
   <app-info [text]="text" [title]="title">
     <app-button label="add new course"></app-button>

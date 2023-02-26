@@ -1,7 +1,13 @@
 @import 'src/app/shared/styles/styles';
 
+:host {
+  width: 100%;
+  max-width: 1200px;
+}
+
 .course {
- min-width: 60vw;
+  width: 90%;
+  max-width: 1200px;
 
   &__flex {
     display: flex;

@@ -61,17 +61,20 @@ export class AppComponent {
   onModalResult(result:boolean){
     this.onDeleteConfirmed(result)}
 
-  onCourseActionExecut({action, courseId}:{action: string, courseId: string}) {
+  onCourseActionExecut({action, payload}:{action: string, payload: any}) {
     switch (action) {
       case 'show':
-        console.log('show',courseId)
+        console.log('show',payload.courseId)
         break;
       case 'delete':
         this.onShowModal();
-        this.currentCourseId = courseId;
+        this.currentCourseId = payload.courseId;
         break;
       case 'edit':
-        console.log('edit',courseId)
+        console.log('edit',payload.courseId)
+        break;
+      case 'seacrh':
+        console.log('seacrh',payload.title)
         break;
       default:
         break;

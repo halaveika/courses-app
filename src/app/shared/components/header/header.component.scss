@@ -1,13 +1,21 @@
 @import "src/app/shared/styles/variables/colors";
 
+:host {
+  display: block;
+  width: 100%;
+  background-color: $color-white;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+  height: fit-content;
+}
+
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
   height: 80px;
   padding: 0 60px;
-  background-color: $color-white;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 
   &__info {
     display: flex;
@@ -23,5 +31,8 @@
   @media screen and (max-width:498px) {
     flex-direction: column;
     height: fit-content;
+    & {
+      padding: 0 15px;
+    }
   }
 }
