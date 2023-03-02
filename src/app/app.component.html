@@ -2,6 +2,7 @@
   <span class="app-header__user"> {{ user }} </span>
   <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="onLoginViews('logout')"></app-button>
 </app-header>
+<router-outlet></router-outlet>
 <div class="app-root">
   <!-- Search component -->
   <app-search placeholder="Search courses" (searchEvent)="onCourseActionExecut($event)"></app-search>
@@ -9,8 +10,8 @@
   <app-info [text]="text" [title]="title">
     <app-button label="add new course"></app-button>
   </app-info>
-  <app-courses *ngIf="isLogged"  (courseAction)="onCourseActionExecut($event)" [courses]="filteredCourses">
-  </app-courses>
+  <!-- <app-courses *ngIf="isLogged"  (courseAction)="onCourseActionExecut($event)" [courses]="filteredCourses">
+  </app-courses> -->
   <!-- Course Card component -->
   <!-- <app-course-card></app-course-card> -->
   <!-- Login Form component -->
