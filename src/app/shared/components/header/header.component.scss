@@ -1,0 +1,38 @@
+@import "src/app/shared/styles/variables/colors";
+
+:host {
+  display: block;
+  width: 100%;
+  background-color: $color-white;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+  height: fit-content;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 80px;
+  padding: 0 60px;
+
+  &__info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: fit-content;
+    div.app-button {
+      width: 140px;
+      margin-left: 26px;
+    }
+  }
+  @media screen and (max-width:498px) {
+    flex-direction: column;
+    height: fit-content;
+    & {
+      padding: 0 15px;
+    }
+  }
+}

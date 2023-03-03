@@ -1,0 +1,4 @@
+<form #searchForm="ngForm" class="app-search" (ngSubmit)="onSubmit()">
+  <input id="query" type="text" class="form-control" placeholder="{{placeholder}}" [(ngModel)]="query" name="query" #searchQuery="ngModel" required>
+  <app-button type="submit" [label]="'Search'" [styles]="'width: 143.83px;'"></app-button>
+</form>
