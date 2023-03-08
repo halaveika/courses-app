@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { mockedCourseList} from './shared/mocks/mockedCourseList';
 import { Course } from 'src/app/shared/models/course-type';
 import {LoginAction} from 'src/app/shared/models/loginAction-type'
 import { LoginModel } from './shared/models/loginModel-type';
+import { CoursesStoreService } from 'src/app/services/courses-store.service';
 
 type InfoData = {
   title: string,
@@ -24,7 +25,7 @@ const mockInfo = {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title: string =  emptyInfo.title;
   text: string =  emptyInfo.text;
   user: string = '';
@@ -41,6 +42,14 @@ export class AppComponent {
   courses: Course[] = mockedCourseList;
   filteredCourses: Course[] = this.courses;
   private users:LoginModel[] = [];
+
+  constructor(private coursesStoreService: CoursesStoreService) {
+
+  }
+
+  ngOnInit() {
+    this.coursesStoreService.getAll();
+  }
 
   setInfo(infoData:InfoData) {
     this.title = infoData.title;

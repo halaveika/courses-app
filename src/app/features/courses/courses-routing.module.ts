@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CoursesComponent } from './courses.component';
 import { CourseComponent } from '../course/course.component';
+import { CourseFormComponent } from 'src/app/shared/components';
+import { CourseInfoComponent } from '../course-info/course-info.component';
 
 const routes: Routes = [
   {
@@ -10,15 +12,15 @@ const routes: Routes = [
   },
   {
     path: 'add',
-    component: CourseComponent,
+    component: CourseFormComponent,
   },
   {
     path: ':id',
-    component: CourseComponent,
+    component: CourseInfoComponent,
   },
   {
     path: 'edit/:id',
-    component: CourseComponent,
+    component: CourseFormComponent,
   },
 ];
 
