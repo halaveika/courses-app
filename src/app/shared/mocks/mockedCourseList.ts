@@ -22,3 +22,13 @@ export const mockedCourseList = [
     authors: ["Anna Sidorenko", "Valentina Larina"],
   },
 ];
+
+export const emptyCourse =
+  {
+    id: "",
+    title: "",
+    description: "",
+    creationDate: new Date(),
+    duration: 0,
+    authors: [],
+  }

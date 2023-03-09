@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Course } from 'src/app/shared/models/course-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
-  courses$!:any; // define courses$ as an observable
+  courses$!:Observable<Course[]>;
   isLoading$ = this.coursesStoreService.isLoading$;
   @Input() editable: boolean = true;
   @Output() courseAction = new EventEmitter<{action: string, payload:{courseId: string}}>();

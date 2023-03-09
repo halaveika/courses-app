@@ -6,6 +6,10 @@
     </div>
     <div class="course-card__info">
         <div class="course-card__info-text">
+            <div *ngIf="id" >
+              <b>Id: </b>
+              {{ id }}
+            </div>
             <div>
               <b>Authors: </b>
               {{ authors }}

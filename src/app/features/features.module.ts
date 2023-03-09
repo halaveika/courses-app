@@ -12,8 +12,6 @@ import { CourseInfoComponent } from './course-info/course-info.component';
     RegistrationRoutingModule,
     CoursesModule,
   ],
-  declarations: [
-    CourseInfoComponent
-  ],
+  declarations: [],
 })
 export class FeaturesModule { }

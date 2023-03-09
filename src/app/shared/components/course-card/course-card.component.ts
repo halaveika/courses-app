@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class CourseCardComponent {
   @Input() title: string = '';
+  @Input() id?: string;
   @Input() description: string = '';
   @Input() creationDate: Date = new Date();
   @Input() duration: number = 0;

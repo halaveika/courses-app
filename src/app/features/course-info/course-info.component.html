@@ -1,1 +1,3 @@
-<p>course-info works!</p>
+<app-course-card [title]="course.title" [description]="course.description" [creationDate]="course.creationDate" [duration]="course.duration" [authors]="course.authors" [id]="course.id">
+  <app-button  label='back' (click)="clickBack()" [styles]="'position: absolute; bottom: -70px; right: 100px;'"></app-button>
+</app-course-card>

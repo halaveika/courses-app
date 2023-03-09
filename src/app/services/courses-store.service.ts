@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable,tap } from 'rxjs';
+import { Course } from '../shared/models/course-type';
 import { CoursesService } from './courses.service';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { CoursesService } from './courses.service';
 })
 export class CoursesStoreService {
   private isLoading$$ = new BehaviorSubject<boolean>(false);
-  private courses$$ = new BehaviorSubject<any[]>([]);
+  private courses$$ = new BehaviorSubject<Course[]>([]);
 
   isLoading$ = this.isLoading$$.asObservable();
   courses$ = this.courses$$.asObservable();
@@ -18,7 +19,8 @@ export class CoursesStoreService {
     this.isLoading$$.next(true);
     this.coursesService.getAll().subscribe(
       (courses) => {
-        this.courses$$.next(courses.result);
+        const result = courses.result.map((course: Course) => {return {...course, creationDate: new Date(course.creationDate)}})
+        this.courses$$.next(result);
         this.isLoading$$.next(false);
       },
       (error) => {
@@ -50,17 +52,13 @@ export class CoursesStoreService {
     );
   }
 
-  getCourse(id: any): void {
+  getCourse(id: string): Observable<Course> {
     this.isLoading$$.next(true);
-    this.coursesService.getCourse(id).subscribe(
-      (course) => {
-        this.courses$$.next([course]);
+    return this.coursesService.getCourse(id).pipe(
+      map((course) => {
         this.isLoading$$.next(false);
-      },
-      (error) => {
-        console.log(error);
-        this.isLoading$$.next(false);
-      }
+        return {...course.result, creationDate: new Date(course.result.creationDate)}
+      })
     );
   }
 
