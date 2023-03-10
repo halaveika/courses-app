@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { mockedCourseList} from './shared/mocks/mockedCourseList';
 import { Course } from 'src/app/shared/models/course-type';
 import {LoginAction} from 'src/app/shared/models/loginAction-type'
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit {
   filteredCourses: Course[] = this.courses;
   private users:LoginModel[] = [];
 
-  constructor(private coursesStoreService: CoursesStoreService) {
+  constructor(private coursesStoreService: CoursesStoreService, private router: Router) {
 
   }
 
@@ -70,28 +71,6 @@ export class AppComponent implements OnInit {
 
   onModalResult(result:boolean){
     this.onDeleteConfirmed(result)}
-
-  onCourseActionExecut({action, payload}:{action: string, payload: any}) {
-    console.log('onCourseActionExecut',action,payload)
-    switch (action) {
-      case 'show':
-        console.log('show',payload.courseId)
-        break;
-      case 'delete':
-        this.onShowModal();
-        this.currentCourseId = payload.courseId;
-        break;
-      case 'edit':
-        console.log('edit',payload.courseId)
-        break;
-      case 'search':
-        console.log('seacrh',payload.title)
-        this.filteredCourses = this.courses.filter(course => course.title.toLocaleLowerCase().includes(payload.title.toLocaleLowerCase()))
-        break;
-      default:
-        break;
-    }
-  }
 
   onLoginActions({action, payload: { name, email, password }}: LoginAction) {
     switch (action) {
@@ -150,5 +129,9 @@ export class AppComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  addCourse() {
+    this.router.navigate(['/courses/add']);
   }
 }

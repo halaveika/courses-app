@@ -4,16 +4,41 @@ import { Course } from 'src/app/shared/models/course-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+type InfoData = {
+  title: string,
+  text: string
+}
+
+const emptyInfo = {
+  title:'Your List Is Empty',
+  text:'Please use ’Add New Course’ button to add your first course'
+}
+
+const mockInfo = {
+  title:'angular-course',
+  text:''
+}
+
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
+  title: string =  emptyInfo.title;
+  text: string =  emptyInfo.text;
   courses$!:Observable<Course[]>;
   isLoading$ = this.coursesStoreService.isLoading$;
   @Input() editable: boolean = true;
   @Output() courseAction = new EventEmitter<{action: string, payload:{courseId: string}}>();
+  currentCourseId: string = '';
+  modalConfig = {
+    title: 'Confirmation',
+    message: 'Are you sure you want to delete this course?',
+    okButtonText: 'OK',
+    cancelButtonText: 'CLOSE',
+  }
+  // filteredCourses: Course[] = this.courses;
 
   constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute) {
   }
@@ -24,19 +49,26 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  onCourseAction(action: string, courseId: string) {
+  onCourseAction({action, payload}:{action: string, payload: any}) {
     switch(action) {
       case 'delete':
-        this.coursesStoreService.deleteCourse(courseId);
+        this.coursesStoreService.deleteCourse(payload);
         break;
       case 'edit':
-        this.router.navigate(['edit', courseId], { relativeTo: this.route });
+        this.router.navigate(['edit', payload], { relativeTo: this.route });
         break;
       case 'show':
-      default:
-        this.router.navigate([courseId], { relativeTo: this.route });
+        this.router.navigate([payload], { relativeTo: this.route });
+        break;
+      case 'search':
+        console.log('seacrh',payload.title)
+        // this.filteredCourses = this.courses.filter(course => course.title.toLocaleLowerCase().includes(payload.title.toLocaleLowerCase()))
         break;
     }
+  }
+
+  addCourse() {
+    this.router.navigate(['/courses/add']);
   }
 
 }

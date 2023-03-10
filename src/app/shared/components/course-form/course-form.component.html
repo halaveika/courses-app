@@ -1,5 +1,5 @@
 <!-- Replace ::text:: with your code -->
-<h2>Create / Edit Course</h2>
+<h2>{{ courseId ? 'Edit Course' : 'Create' }}</h2>
 <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
   <div class="app-plate">
     <div class="course">
@@ -58,8 +58,8 @@
         </div>
       </div>
       <div class="form__action">
-        <app-button type="reset" [label]="'Cansel'" [styles]="'width: 143.83px;'"></app-button>
-        <app-button type="submit" [label]="'Create Course'" [disabled]="!courseForm.valid"></app-button>
+        <app-button type="reset" [label]="'Cansel'" [styles]="'width: 143.83px;'" (click)="clickBack()"></app-button>
+        <app-button type="submit" [label]="courseId ? 'Edit Course' : 'Create Course'" [disabled]="!courseForm.valid"></app-button>
       </div>
     </div>
   </div>
