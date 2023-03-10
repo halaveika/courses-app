@@ -1,0 +1,53 @@
+<h2 class="text-align-center">Registration</h2>
+<div class="app-plate">
+  <div class="registration-form">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="form__control" [ngClass]="{'has-error': registrationForm.get('name')?.invalid && (registrationForm.get('name')?.touched || submitted)}">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Input text"
+          formControlName="name"
+        />
+        <div *ngIf="registrationForm.get('name')?.invalid && (registrationForm.get('name')?.touched || submitted)">
+          <div *ngIf="registrationForm.get('name')?.errors?.['required']">Name is required</div>
+          <div *ngIf="registrationForm.get('name')?.errors?.['minlength']">Name should not be less than 6 symbols</div>
+        </div>
+      </div>
+      <div class="form__control" [ngClass]="{'has-error': registrationForm.get('email')?.invalid && (registrationForm.get('email')?.touched || submitted)}">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          placeholder="Input text"
+          formControlName="email"
+          appValidateEmail
+        />
+        <div *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.touched || submitted)">
+          <div *ngIf="registrationForm.get('email')?.errors?.['required']">Email is required</div>
+          <div *ngIf="registrationForm.get('email')?.errors?.['invalidEmail']">Invalid email format</div>
+        </div>
+      </div>
+      <div class="form__control" [ngClass]="{'has-error': registrationForm.get('password')?.invalid && (registrationForm.get('password')?.touched || submitted)}">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Input text"
+          formControlName="password"
+          togglePassword
+        />
+        <div *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.touched || submitted)">
+          <div *ngIf="registrationForm.get('password')?.errors?.['required']">Password is required</div>
+        </div>
+      </div>
+      <div class="form__action">
+        <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+      </div>
+    </form>
+    <div class="form__text">
+      If you have an account you may <strong (click)="onLogin()">Login</strong>
+    </div>
+  </div>
+</div>

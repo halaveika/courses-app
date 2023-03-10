@@ -1,0 +1,62 @@
+@import 'src/app/shared/styles/styles';
+
+:host {
+  width: 100%;
+  max-width: 1200px;
+
+  h2 {
+    margin-left: 5vw;
+  }
+}
+
+.course {
+  width: 90%;
+  max-width: 1200px;
+
+  &__flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    & input {
+      flex: 1;
+    }
+
+    & app-button {
+      margin-left: 16px;
+    }
+
+    & .course__duration {
+      margin-left: 16px;
+    }
+  }
+
+  &__authors {
+    max-width: 90vw;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    &-item {
+      margin-right: 10px;
+      display: flex;
+      align-items: center
+    }
+  }
+
+  &__icon {
+    margin-left: 4px;
+    cursor: pointer;
+  }
+
+  .form__action {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  label {
+    font-weight: normal;
+    font-size: 1rem;
+  }
+}
