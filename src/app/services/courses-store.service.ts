@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable,tap } from 'rxjs';
+import { CoursesResponse } from '../shared/models/courses-response-type';
 import { Course } from '../shared/models/course-type';
 import { CoursesService } from './courses.service';
 
@@ -15,11 +16,17 @@ export class CoursesStoreService {
 
   constructor(private coursesService: CoursesService) { }
 
+  private formatDate(date:string) {
+    const parts = date.split('/');
+    const isoDateString = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}T00:00:00.000Z`;
+    return new Date(isoDateString)
+  }
+
   getAll(): void {
     this.isLoading$$.next(true);
     this.coursesService.getAll().subscribe(
-      (courses) => {
-        const result = courses.result.map((course: Course) => {return {...course, creationDate: new Date(course.creationDate)}})
+      (courses:CoursesResponse) => {
+        const result = courses.result.map((course) => {return {...course, creationDate: this.formatDate(course.creationDate)}})
         this.courses$$.next(result);
         this.isLoading$$.next(false);
       },
@@ -30,7 +37,7 @@ export class CoursesStoreService {
     );
   }
 
-  createCourse(course: any): void {
+  createCourse(course: Omit<Course,'id' | 'creationDate'>): void {
     this.coursesService.createCourse(course).subscribe(
       () => {
         this.getAll();
@@ -41,7 +48,7 @@ export class CoursesStoreService {
     );
   }
 
-  editCourse(id: any, course: any): void {
+  editCourse(id: string, course: Omit<Course,'id' | 'creationDate'>): void {
     this.coursesService.editCourse(id, course).subscribe(
       () => {
         this.getAll();
@@ -57,7 +64,7 @@ export class CoursesStoreService {
     return this.coursesService.getCourse(id).pipe(
       map((course) => {
         this.isLoading$$.next(false);
-        return {...course.result, creationDate: new Date(course.result.creationDate)}
+        return {...course.result, creationDate: this.formatDate(course.result.creationDate)}
       })
     );
   }

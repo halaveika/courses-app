@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/logout`, {}).pipe(
+    return this.http.delete(`${this.baseUrl}/logout`, {}).pipe(
       tap(() => {
         this.sessionStorageService.deleteToken();
         this.isAuthorized$$.next(false);

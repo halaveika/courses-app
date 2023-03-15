@@ -12,13 +12,14 @@ export class RegistrationFormComponent {
   registrationForm: FormGroup;
   submitted = false;
   togglePassword = false;
-  @Output() loginSubmitted = new EventEmitter<LoginAction>();
+  @Output() onLoginActions = new EventEmitter<LoginAction>();
   @Output() login = new EventEmitter<string>();
 
   constructor(private formBuilder: FormBuilder) {
     this.registrationForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
       email: ['', [Validators.required, new EmailValidatorDirective()]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -31,10 +32,11 @@ export class RegistrationFormComponent {
     if (this.registrationForm.invalid) {
       return;
     }
-    this.loginSubmitted.emit({action:'register', payload:this.registrationForm.value });
+    this.onLoginActions.emit({action:'registration', payload:this.registrationForm.value });
   }
 
   onLogin() {
-    this.login.emit('login');
+    this.onLoginActions.emit({action:'login', payload: null });
   }
+
 }

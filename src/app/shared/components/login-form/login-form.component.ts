@@ -10,7 +10,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent {
-  @Output() loginSubmitted = new EventEmitter<LoginAction>();
+  @Output() onLoginActions = new EventEmitter<LoginAction>();
   @Output() register = new EventEmitter<string>();
   loginModel: LoginModel = {email:'',password: ''}
   constructor(public library: FaIconLibrary) {
@@ -20,11 +20,11 @@ export class LoginFormComponent {
   onSubmit() {
     if (this.loginModel.email && this.loginModel.password) {
       console.log(this.loginModel);
-      this.loginSubmitted.emit({action:'login', payload:this.loginModel });
+      this.onLoginActions.emit({action:'login', payload:this.loginModel });
     }
   }
 
   onRegister() {
-    this.register.emit('register');
+    this.onLoginActions.emit({action:'registration', payload: null });
   }
 }

@@ -72,8 +72,14 @@ export class CourseFormComponent implements OnInit {
     const courseData: Omit<Course,'id' | 'creationDate'> = {title,description,duration,authors};
     console.log(courseData);
     console.log('onSubmit');
+    if(this.courseId) {
+      this.coursesStoreService.editCourse(this.courseId,courseData);
+    } else {
+      this.coursesStoreService.createCourse(courseData);
+    }
     this.courseForm.reset();
     this.authors.clear();
+    this.router.navigate(['/courses']);
   }
 
   addAuthor() {

@@ -72,63 +72,67 @@ export class AppComponent implements OnInit {
   onModalResult(result:boolean){
     this.onDeleteConfirmed(result)}
 
-  onLoginActions({action, payload: { name, email, password }}: LoginAction) {
-    switch (action) {
-      case 'login':
-        {
-          const user = this.users.filter(user => user.email === email && user.password === password);
-          if(user.length) {
-            this.user = user[0].name!;
-            this.isLogged = true;
-            this.isRegistred = true;
-            this.setInfo(mockInfo);
-          } else {
-            this.isLogged = false;
-            this.isRegistred = false;
-          }
-        }
-        break;
-      case 'register':
-        {
-          const user = this.users.filter(user => user.email === email)[0];
-          if(user) {
-            user.name = name;
-            user.password = password;
-            user.email = email;
-          } else {
-            this.users.push({ name, email, password });
-          }
-          this.isLogged = false;
-          this.isRegistred = true;
-        }
-        break;
-      default:
-        break;
-    }
-  }
+  // onLoginActions({action, payload: { name, email, password }}: LoginAction) {
+  //   switch (action) {
+  //     case 'login':
+  //       {
+  //         const user = this.users.filter(user => user.email === email && user.password === password);
+  //         if(user.length) {
+  //           this.user = user[0].name!;
+  //           this.isLogged = true;
+  //           this.isRegistred = true;
+  //           this.setInfo(mockInfo);
+  //         } else {
+  //           this.isLogged = false;
+  //           this.isRegistred = false;
+  //         }
+  //       }
+  //       break;
+  //     case 'register':
+  //       {
+  //         const user = this.users.filter(user => user.email === email)[0];
+  //         if(user) {
+  //           user.name = name;
+  //           user.password = password;
+  //           user.email = email;
+  //         } else {
+  //           this.users.push({ name, email, password });
+  //         }
+  //         this.isLogged = false;
+  //         this.isRegistred = true;
+  //       }
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
-  onLoginViews(view:string) {
-    switch (view) {
-      case 'login':
-        this.isRegistred = true;
-        this.isLogged = false;
-        console.log(view);
-        break;
-      case 'register':
-        this.isLogged = false;
-        this.isRegistred = false;
-        console.log(view);
-        break;
-      case 'logout':
-        this.isLogged = false;
-        this.isRegistred = true;
-        this.user = '';
-        this.setInfo(emptyInfo)
-        console.log(view);
-        break;
-      default:
-        break;
-    }
+  // onLoginViews(view:string) {
+  //   switch (view) {
+  //     case 'login':
+  //       this.isRegistred = true;
+  //       this.isLogged = false;
+  //       console.log(view);
+  //       break;
+  //     case 'register':
+  //       this.isLogged = false;
+  //       this.isRegistred = false;
+  //       console.log(view);
+  //       break;
+  //     case 'logout':
+  //       this.isLogged = false;
+  //       this.isRegistred = true;
+  //       this.user = '';
+  //       this.setInfo(emptyInfo)
+  //       console.log(view);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+
+  onLoginViews(t:string) {
+    console.log('logout',t);
   }
 
   addCourse() {

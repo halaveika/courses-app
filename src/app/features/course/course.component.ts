@@ -27,5 +27,4 @@ export class CourseComponent {
   onShowClicked() {
     this.show.emit();
   }
-
 }
