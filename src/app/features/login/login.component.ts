@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginAction } from 'src/app/shared/models/loginAction-type';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor(private router: Router,  private authService: AuthService) {
+  constructor(private router: Router,  private authService: AuthService, private userStoreService: UserStoreService) {
 
   }
 
@@ -20,6 +21,7 @@ export class LoginComponent {
           result => {
             if (result.successful) {
               this.router.navigate(['/courses']);
+              this.userStoreService.getUser();
             }
           });
         break;

@@ -50,7 +50,7 @@ export class CourseFormComponent implements OnInit {
       this.coursesStoreService.getCourse(this.courseId).subscribe(
         result => {
           this.course = result;
-          console.log(this.course);
+          console.log('CourseFormComponent',this.course);
           const authorForms = this.course.authors.map(author => this.fb.group({ name: author }));
           this.courseForm.setControl('authors', this.fb.array(authorForms));
           this.courseForm.patchValue({

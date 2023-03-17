@@ -11,7 +11,7 @@ export class CoursesService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/all`);
+    return this.http.get(`${this.baseUrl}/all`)
   }
 
   createCourse(course: any): Observable<any> {
