@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError} from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { AuthorResponse } from '../shared/models/author-response-type';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +12,18 @@ export class AuthorService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/all`);
+  getAll(): Observable<AuthorResponse> {
+    return this.http.get<AuthorResponse>(`${this.baseUrl}/all`);
   }
 
   createAuthor(name: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/add`, {name});
+    return this.http.post(`${this.baseUrl}/add`, {name}).pipe(
+      tap(response => console.log('createAuthor response', response)),
+      catchError(error => {
+        console.error('createAuthor error', error);
+        return throwError(error);
+      })
+    );
   }
 
   editAuthor(id: string, name: string): Observable<any> {
@@ -27,6 +35,12 @@ export class AuthorService {
   }
 
   deleteAuthor(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/${id}`).pipe(
+      tap(response => console.log('deleteAuthor response', response)),
+      catchError(error => {
+        console.error('deleteAuthor error', error);
+        return throwError(error);
+      })
+    );
   }
 }

@@ -1,8 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map  } from 'rxjs';
 import { Course } from 'src/app/shared/models/course-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
+import { Author } from 'src/app/shared/models/author-type';
 
 type InfoData = {
   title: string,
@@ -40,13 +42,23 @@ export class CoursesComponent implements OnInit {
   }
   // filteredCourses: Course[] = this.courses;
 
-  constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute) {
+  constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private userStoreService: UserStoreService) {
   }
 
   ngOnInit() {
-    this.courses$ = this.coursesStoreService.courses$.pipe(
-      tap((result) => console.log(result))
-    );
+    console.log('CoursesComponent ngOnInit');
+    let allAuthors:Author[] = [];
+    this.userStoreService.getAuthors().subscribe((authors) => {
+      allAuthors = authors;
+      this.courses$ = this.coursesStoreService.courses$.pipe(
+        tap((result) => console.log(result)),
+        map((result) => result.map(e => {
+          console.log('allAuthors',allAuthors);
+          const authors = e.authors.map((a:string) => allAuthors.find(i => i.id === a )!.name);
+          console.log('authors',authors);
+          return {...e,authors}} )),
+      );
+    });
   }
 
   onCourseAction({action, payload}:{action: string, payload: any}) {
