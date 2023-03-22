@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject,throwError, catchError, forkJoin, map, Observable, switchMap, tap, of} from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { BehaviorSubject,throwError, catchError, forkJoin, map, Observable, switchMap, tap, from, of, concatMap, toArray, concat} from 'rxjs';
+import { delay, last } from 'rxjs/operators';
 import { AuthorService } from 'src/app/services/author.service';
 import { AuthorResponse } from 'src/app/shared/models/author-response-type';
 import { Author } from 'src/app/shared/models/author-type';
@@ -36,30 +36,41 @@ export class UserStoreService {
     );
   }
 
-  storeAuthors(previousAuthorsArray: Author[], currentAuthorsArray: Author[]): Observable<any> {
-    const deleteObservables$ = previousAuthorsArray.map(e => this.authorService.deleteAuthor(e.id));
-    const createObservables$ = currentAuthorsArray.map(e => this.authorService.createAuthor(e.name));
-    const allObservables$ = [...deleteObservables$, ...createObservables$];
+  deleteAuthors(authorsToDelete: Author[]): Observable<any[]> {
+    const deleteObservables$ = authorsToDelete.map(e => this.authorService.deleteAuthor(e.id));
+    return from(deleteObservables$).pipe(
+      concatMap(obs => obs),
+      toArray(),
+      catchError(error => {
+        console.error('Error deleting authors:', error);
+        return throwError(error);
+      })
+    );
+  }
 
-    if (allObservables$.length) {
-      return forkJoin(
-        allObservables$.map((observable$, i) =>
-          observable$.pipe(
-            delay(i * 500)
-          )
-        )
-      ).pipe(
-        catchError(error => {
-          console.error('Error deleting/creating authors:', error);
-          return throwError(error);
-        }),
-        map((responses: AuthorResponse[]) =>
-          responses.filter(e => e.successful).map(e => e.result)
-        ),
-        tap(responses => console.log('storeAuthors', responses))
-      );
-    } else {
-      return of([]);
-    }
+  createAuthors(authorsToCreate: Author[]): Observable<Author[]> {
+    const createObservables$ = authorsToCreate.map(e => this.authorService.createAuthor(e.name));
+    return from(createObservables$).pipe(
+      concatMap(obs => obs),
+      toArray(),
+      map((responses: AuthorResponse[]) =>
+        responses
+          .filter(e => e.successful)
+          .map(e => e.result)
+          .flat()
+      ),
+      catchError(error => {
+        console.error('Error creating authors:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  storeAuthors(previousAuthorsArray: Author[], currentAuthorsArray: Author[]): Observable<Author[]> {
+    const deleteObservable$ = this.deleteAuthors(previousAuthorsArray);
+    const createObservable$ = this.createAuthors(currentAuthorsArray);
+    return deleteObservable$.pipe(
+      switchMap(() => createObservable$)
+    );
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Observable, tap, map  } from 'rxjs';
+import { Observable, tap, map, mergeMap  } from 'rxjs';
 import { Course } from 'src/app/shared/models/course-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -47,18 +47,20 @@ export class CoursesComponent implements OnInit {
 
   ngOnInit() {
     console.log('CoursesComponent ngOnInit');
-    let allAuthors:Author[] = [];
-    this.userStoreService.getAuthors().subscribe((authors) => {
-      allAuthors = authors;
-      this.courses$ = this.coursesStoreService.courses$.pipe(
-        tap((result) => console.log(result)),
-        map((result) => result.map(e => {
-          console.log('allAuthors',allAuthors);
-          const authors = e.authors.map((a:string) => allAuthors.find(i => i.id === a )!.name);
-          console.log('authors',authors);
-          return {...e,authors}} )),
-      );
-    });
+    this.coursesStoreService.getAll();
+    this.courses$ = this.userStoreService.getAuthors().pipe(
+      mergeMap((allAuthors) =>
+        this.coursesStoreService.courses$.pipe(
+          tap( (result) => console.log(result)),
+          map((result) =>
+            result.map((e) => {
+              const authors = e.authors.map((a: string) => allAuthors.find((i) => i.id === a)?.name).filter(a => !!a) as string[];
+              return { ...e, authors };
+            })
+          )
+        )
+      )
+    );
   }
 
   onCourseAction({action, payload}:{action: string, payload: any}) {

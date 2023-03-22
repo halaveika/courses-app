@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, map, Observable,Subscription,tap } from 'rxjs';
+import { BehaviorSubject, map, Observable,Subscription,tap, of, switchMap, EMPTY } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -38,11 +38,10 @@ export class CourseFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.courseId = params['id'];
     });
-
     this.authorsSubscription = this.userStoreService.getAuthors().subscribe((authors) => {
       this.allAuthors = authors;
+      console.log('ngOnInit this.allAuthors', this.allAuthors);
     });
-
     this.initForm();
   }
 
@@ -69,7 +68,7 @@ export class CourseFormComponent implements OnInit {
           console.log('this.allAuthors',this.allAuthors);
           this.courseAuthors = this.course.authors.map(id => this.allAuthors.find( a => a.id === id)) as Author[];
           console.log('this.courseAuthors',this.courseAuthors);
-          const authorForms = this.courseAuthors.map(author => this.fb.group({ name: author.name }));
+          const authorForms = this.courseAuthors.map(author => this.fb.group({ name: [author.name] }));
           console.log('authorForms',authorForms);
           authorForms.forEach(e =>  this.authors.push(this.fb.group({
             name: [e.value.name,]
@@ -89,39 +88,43 @@ export class CourseFormComponent implements OnInit {
   }
 
   onSubmit() {
-    const {title, description, duration} = this.courseForm.value
-    const courseData: Omit<Course,'id' | 'creationDate'> = {title,description,duration, authors: []};
-    console.log('onSubmit');
-    if(this.courseId) {
-      console.log('onSubmit if this.courseId this.courseAuthors:', this.courseAuthors);
-      console.log('onSubmit if this.courseId this.authors.value:', this.authors.value);
-      this.userStoreService.storeAuthors(this.courseAuthors,this.authors.value).subscribe(
-        result => {
-          if(result) {
-            console.log('if result',result);
-            courseData.authors = result.map((e: { id: string }) => e.id);
-            console.log('courseData',courseData);
-            this.coursesStoreService.editCourse(this.courseId,courseData);
+    const { title, description, duration } = this.courseForm.value;
+    const courseData: Omit<Course, 'id' | 'creationDate'> = { title, description, duration, authors: [] };
+
+    if (this.courseId) {
+      this.userStoreService.storeAuthors(this.courseAuthors, this.authors.value)
+        .pipe(
+          switchMap((result:Author[]) => {
+            if (result) {
+              console.log('onSubmit added authors',result);
+              courseData.authors = result.map((e: { id: string }) => e.id);
+              return this.coursesStoreService.editCourse(this.courseId, courseData);
+            }
+            return of(EMPTY);
+          }),
+          tap((result) => {
+            console.log('onSubmit courses',result);
             this.courseForm.reset();
             this.authors.clear();
             this.router.navigate(['/courses']);
-          }
-        }
-      );
+          } )
+        ).subscribe();
     } else {
-      this.userStoreService.storeAuthors(this.courseAuthors,this.authors.value).subscribe(
-        result => {
-          if(result) {
-            console.log('else result',result);
-            courseData.authors = result.map((e: { id: string }) => e.id);
-            console.log('courseData',courseData);
-            this.coursesStoreService.createCourse(courseData);
-            this.courseForm.reset();
-            this.authors.clear();
-            this.router.navigate(['/courses']);
-          }
-        }
-      );
+      this.userStoreService.storeAuthors(this.courseAuthors, this.authors.value)
+        .pipe(
+          switchMap((result: Author[]) => {
+            if (result) {
+              courseData.authors = result.map((e: { id: string }) => e.id);
+              return this.coursesStoreService.createCourse(courseData);
+            }
+            return of(EMPTY);
+          })
+        )
+        .subscribe(() => {
+          this.courseForm.reset();
+          this.authors.clear();
+          this.router.navigate(['/courses']);
+        }, error => console.error('Error creating course:', error));
     }
   }
 

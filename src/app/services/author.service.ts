@@ -17,13 +17,7 @@ export class AuthorService {
   }
 
   createAuthor(name: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/add`, {name}).pipe(
-      tap(response => console.log('createAuthor response', response)),
-      catchError(error => {
-        console.error('createAuthor error', error);
-        return throwError(error);
-      })
-    );
+    return this.http.post(`${this.baseUrl}/add`, {name})
   }
 
   editAuthor(id: string, name: string): Observable<any> {
@@ -35,12 +29,6 @@ export class AuthorService {
   }
 
   deleteAuthor(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`).pipe(
-      tap(response => console.log('deleteAuthor response', response)),
-      catchError(error => {
-        console.error('deleteAuthor error', error);
-        return throwError(error);
-      })
-    );
+    return this.http.delete(`${this.baseUrl}/${id}`)
   }
 }

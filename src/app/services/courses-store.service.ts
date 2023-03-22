@@ -37,26 +37,12 @@ export class CoursesStoreService {
     );
   }
 
-  createCourse(course: Omit<Course,'id' | 'creationDate'>): void {
-    this.coursesService.createCourse(course).subscribe(
-      () => {
-        this.getAll();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  createCourse(course: Omit<Course,'id' | 'creationDate'>): any {
+    return this.coursesService.createCourse(course)
   }
 
-  editCourse(id: string, course: Omit<Course,'id' | 'creationDate'>): void {
-    this.coursesService.editCourse(id, course).subscribe(
-      () => {
-        this.getAll();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  editCourse(id: string, course: Omit<Course,'id' | 'creationDate'>):  Observable<any> {
+    return this.coursesService.editCourse(id, course)
   }
 
   getCourse(id: string): Observable<Course> {
