@@ -4,7 +4,8 @@ import { Course } from 'src/app/shared/models/course-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserStoreService } from 'src/app/user/services/user-store.service';
-import { Author } from 'src/app/shared/models/author-type';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { CoursesService } from 'src/app/services/courses.service';
 
 type InfoData = {
   title: string,
@@ -40,14 +41,54 @@ export class CoursesComponent implements OnInit {
     okButtonText: 'OK',
     cancelButtonText: 'CLOSE',
   }
-  // filteredCourses: Course[] = this.courses;
+  isLogged: boolean = false;
+  filteredCourses: Course[] = [];
+  showModal: boolean = false;
+  deletedCourseId: string = '';
 
-  constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private userStoreService: UserStoreService) {
+  constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private userStoreService: UserStoreService, private authService: AuthService, private coursesService: CoursesService ) {
   }
 
   ngOnInit() {
     console.log('CoursesComponent ngOnInit');
     this.coursesStoreService.getAll();
+    this.getCourses();
+    this.authService.isAuthorized$.subscribe(
+      (isAuthorized: boolean) => {
+        this.isLogged = isAuthorized;
+      }
+    );
+  }
+
+  onCourseAction({action, payload}:{action: string, payload: any}) {
+    switch(action) {
+      case 'delete':
+        this.onShowModal();
+        this.deletedCourseId = payload
+        break;
+      case 'edit':
+        this.router.navigate(['edit', payload], { relativeTo: this.route });
+        break;
+      case 'show':
+        this.router.navigate([payload], { relativeTo: this.route });
+        break;
+      case 'search':
+        if(payload.title) {
+        this.coursesStoreService.getFiltered(payload.title.toLocaleLowerCase());
+        this.getCourses();
+        } else {
+          this.coursesStoreService.getAll();
+          this.getCourses();
+        }
+        break;
+    }
+  }
+
+  addCourse() {
+    this.router.navigate(['/courses/add']);
+  }
+
+  getCourses() {
     this.courses$ = this.userStoreService.getAuthors().pipe(
       mergeMap((allAuthors) =>
         this.coursesStoreService.courses$.pipe(
@@ -63,26 +104,21 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  onCourseAction({action, payload}:{action: string, payload: any}) {
-    switch(action) {
-      case 'delete':
-        this.coursesStoreService.deleteCourse(payload);
-        break;
-      case 'edit':
-        this.router.navigate(['edit', payload], { relativeTo: this.route });
-        break;
-      case 'show':
-        this.router.navigate([payload], { relativeTo: this.route });
-        break;
-      case 'search':
-        console.log('seacrh',payload.title)
-        // this.filteredCourses = this.courses.filter(course => course.title.toLocaleLowerCase().includes(payload.title.toLocaleLowerCase()))
-        break;
-    }
+  onShowModal() {
+    this.showModal = true;
   }
 
-  addCourse() {
-    this.router.navigate(['/courses/add']);
+  onDeleteConfirmed(result: boolean) {
+    if (result) {
+      this.coursesStoreService.deleteCourse(this.deletedCourseId);
+      this.deletedCourseId = ''
+    }
+    this.showModal = false;
+    this.deletedCourseId = ''
+  }
+
+  onModalResult(result:boolean){
+    this.onDeleteConfirmed(result);
   }
 
 }

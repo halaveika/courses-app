@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable,tap } from 'rxjs';
+import { BehaviorSubject, map, Observable,tap, from, toArray, concatMap, catchError, throwError} from 'rxjs';
 import { CoursesResponse } from '../shared/models/courses-response-type';
 import { Course } from '../shared/models/course-type';
 import { CoursesService } from './courses.service';
+import { AuthorService } from './author.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class CoursesStoreService {
   isLoading$ = this.isLoading$$.asObservable();
   courses$ = this.courses$$.asObservable();
 
-  constructor(private coursesService: CoursesService) { }
+  constructor(private coursesService: CoursesService, private authorService: AuthorService) { }
 
   private formatDate(date:string) {
     const parts = date.split('/');
@@ -26,7 +27,22 @@ export class CoursesStoreService {
     this.isLoading$$.next(true);
     this.coursesService.getAll().subscribe(
       (courses:CoursesResponse) => {
-        const result = courses.result.map((course) => {return {...course, creationDate: this.formatDate(course.creationDate)}})
+        const result = courses.result.map((course) => {return {...course, creationDate: this.formatDate(course.creationDate as string)}})
+        this.courses$$.next(result);
+        this.isLoading$$.next(false);
+      },
+      (error) => {
+        console.log(error);
+        this.isLoading$$.next(false);
+      }
+    );
+  }
+
+  getFiltered(keyword: string): void {
+    this.isLoading$$.next(true);
+    this.coursesService.searchCourses(keyword).subscribe(
+      (courses:CoursesResponse) => {
+        const result = courses.result.map((course) => {return {...course, creationDate: this.formatDate(course.creationDate as string)}})
         this.courses$$.next(result);
         this.isLoading$$.next(false);
       },
@@ -57,8 +73,19 @@ export class CoursesStoreService {
 
   deleteCourse(id: any): void {
     this.coursesService.deleteCourse(id).subscribe(
-      () => {
-        this.getAll();
+     () => {
+        const deleteObservables$ = this.courses$$.value.find(e => e.id === id)?.authors.map(e => this.authorService.deleteAuthor(e)) || [];
+        from(deleteObservables$).pipe(
+          concatMap(obs => obs),
+          toArray(),
+          catchError(error => {
+            console.error('Error deleting authors:', error);
+            return throwError(error);
+          })
+        ).subscribe(() => {
+          console.log('All authors deleted');
+          this.getAll();
+        });
       },
       (error) => {
         console.log(error);

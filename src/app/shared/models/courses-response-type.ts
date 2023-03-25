@@ -1,6 +1,6 @@
-import { CoursesResponseResult } from "./courses-response-result-type";
+import { Course } from "./course-type";
 
 export interface CoursesResponse {
   successful: boolean;
-  result: CoursesResponseResult[]
+  result: Course[]
 }

@@ -1,7 +1,10 @@
-<app-info [text]="text" [title]="title">
+<app-info  *ngIf="(courses$ | async)?.length === 0" [text]="text" [title]="title">
   <app-button label="add new course" (click)="addCourse()"></app-button>
 </app-info>
-<app-search placeholder="Search courses" (searchEvent)="onCourseAction($event)"></app-search>
+<div class="courses-control" *ngIf="isLogged && (courses$ | async)?.length">
+  <app-search  placeholder="Search courses" (searchEvent)="onCourseAction($event)"></app-search>
+  <app-button  label="add new course" (click)="addCourse()"></app-button>
+</div>
 <app-course *ngFor="let course of courses$ | async"
              [title]="course.title"
              [description]="course.description"
@@ -14,3 +17,4 @@
              (edit)="onCourseAction({action:'edit', payload:course.id})"
              >
 </app-course>
+<app-confirm-modal *ngIf="showModal" [title]="modalConfig.title" [message]="modalConfig.message" [okButtonText]="modalConfig.okButtonText" [cancelButtonText]="modalConfig.cancelButtonText" (modalResult)="onModalResult($event)"></app-confirm-modal>

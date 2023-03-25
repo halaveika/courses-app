@@ -9,7 +9,7 @@ export class CourseCardComponent {
   @Input() title: string = '';
   @Input() id?: string;
   @Input() description: string = '';
-  @Input() creationDate: Date = new Date();
+  @Input() creationDate: Date | string = new Date();
   @Input() duration: number = 0;
   @Input() authors: string[] = [];
 }

@@ -5,6 +5,8 @@ import { Course } from 'src/app/shared/models/course-type';
 import {LoginAction} from 'src/app/shared/models/loginAction-type'
 import { LoginModel } from './shared/models/loginModel-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { AuthService } from './auth/services/auth.service';
+import { UserStoreService } from './user/services/user-store.service';
 
 type InfoData = {
   title: string,
@@ -32,7 +34,6 @@ export class AppComponent implements OnInit {
   user: string = '';
   isLogged: boolean = false;
   isRegistred: boolean = true;
-  showModal: boolean = false;
   currentCourseId: string = '';
   modalConfig = {
     title: 'Confirmation',
@@ -44,12 +45,22 @@ export class AppComponent implements OnInit {
   filteredCourses: Course[] = this.courses;
   private users:LoginModel[] = [];
 
-  constructor(private coursesStoreService: CoursesStoreService, private router: Router) {
+  constructor(private coursesStoreService: CoursesStoreService, private router: Router, private authService: AuthService, private userStoreService: UserStoreService) {
 
   }
 
   ngOnInit() {
     this.coursesStoreService.getAll();
+    this.authService.isAuthorized$.subscribe(
+      (isAuthorized: boolean) => {
+        this.isLogged = isAuthorized;
+      }
+    );
+    this.userStoreService.name$.subscribe(
+      (user: any) => {
+        this.user = user;
+      }
+    );
   }
 
   setInfo(infoData:InfoData) {
@@ -57,83 +68,19 @@ export class AppComponent implements OnInit {
     this.text = infoData.text;
   }
 
-  onShowModal() {
-    this.showModal = true;
-  }
-
-  onDeleteConfirmed(result: boolean) {
-    if (result) {
-      this.courses = this.courses.filter(el => this.currentCourseId !== el.id)
-      this.currentCourseId = '';
-    }
-    this.showModal = false;
-  }
-
-  onModalResult(result:boolean){
-    this.onDeleteConfirmed(result)}
-
-  // onLoginActions({action, payload: { name, email, password }}: LoginAction) {
-  //   switch (action) {
-  //     case 'login':
-  //       {
-  //         const user = this.users.filter(user => user.email === email && user.password === password);
-  //         if(user.length) {
-  //           this.user = user[0].name!;
-  //           this.isLogged = true;
-  //           this.isRegistred = true;
-  //           this.setInfo(mockInfo);
-  //         } else {
-  //           this.isLogged = false;
-  //           this.isRegistred = false;
-  //         }
-  //       }
-  //       break;
-  //     case 'register':
-  //       {
-  //         const user = this.users.filter(user => user.email === email)[0];
-  //         if(user) {
-  //           user.name = name;
-  //           user.password = password;
-  //           user.email = email;
-  //         } else {
-  //           this.users.push({ name, email, password });
-  //         }
-  //         this.isLogged = false;
-  //         this.isRegistred = true;
-  //       }
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  // onLoginViews(view:string) {
-  //   switch (view) {
-  //     case 'login':
-  //       this.isRegistred = true;
-  //       this.isLogged = false;
-  //       console.log(view);
-  //       break;
-  //     case 'register':
-  //       this.isLogged = false;
-  //       this.isRegistred = false;
-  //       console.log(view);
-  //       break;
-  //     case 'logout':
-  //       this.isLogged = false;
-  //       this.isRegistred = true;
-  //       this.user = '';
-  //       this.setInfo(emptyInfo)
-  //       console.log(view);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
   onLoginViews(t:string) {
     console.log('logout',t);
   }
+
+  onLogin() {
+    this.router.navigate(['/login']);;
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.isLogged = false;
+  }
+
 
   addCourse() {
     this.router.navigate(['/courses/add']);

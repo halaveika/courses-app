@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CoursesResponse } from '../shared/models/courses-response-type';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class CoursesService {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
-  searchCourses(keyword: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/filter?keyword=${keyword}`);
+  searchCourses(keyword: string): Observable<CoursesResponse> {
+    return this.http.get<CoursesResponse>(`${this.baseUrl}/filter?title=${keyword}`);
   }
 }

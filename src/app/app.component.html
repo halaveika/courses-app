@@ -1,6 +1,6 @@
 <app-header>
-  <span class="app-header__user"> {{ user }} </span>
-  <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="onLoginViews('logout')"></app-button>
+  <span class="app-header__user"> {{ isLogged ? user : '' }} </span>
+  <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="isLogged ? onLogout() : onLogin()"></app-button>
 </app-header>
 <router-outlet></router-outlet>
 <div class="app-root">
@@ -20,5 +20,3 @@
   <!-- Modal component -->
   <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
 </div>
-<app-confirm-modal *ngIf="showModal" [title]="modalConfig.title" [message]="modalConfig.message" [okButtonText]="modalConfig.okButtonText" [cancelButtonText]="modalConfig.cancelButtonText" (modalResult)="onModalResult($event)">
-</app-confirm-modal>
