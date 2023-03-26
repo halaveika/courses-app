@@ -19,15 +19,15 @@ export class CoursesService {
     return this.http.post(`${this.baseUrl}/add`, course);
   }
 
-  editCourse(id: any, course: any): Observable<any> {
+  editCourse(id: string, course: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/${id}`, course);
   }
 
-  getCourse(id: any): Observable<any> {
+  getCourse(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  deleteCourse(id: any): Observable<any> {
+  deleteCourse(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
