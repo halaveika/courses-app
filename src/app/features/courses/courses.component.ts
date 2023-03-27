@@ -1,11 +1,15 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Observable, tap, map, mergeMap  } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Course } from 'src/app/shared/models/course-type';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserStoreService } from 'src/app/user/services/user-store.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { CoursesService } from 'src/app/services/courses.service';
+import { requestAllCourses, requestDeleteCourse } from 'src/app/store/courses/courses.actions';
+import { AppState } from 'src/app/store';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 
 type InfoData = {
   title: string,
@@ -30,8 +34,8 @@ const mockInfo = {
 export class CoursesComponent implements OnInit {
   title: string =  emptyInfo.title;
   text: string =  emptyInfo.text;
-  courses$!:Observable<Course[]>;
-  isLoading$ = this.coursesStoreService.isLoading$;
+  courses$: Observable<Course[]> = this.store.select(state => state.courses.allCourses);
+  isLoading$: Observable<boolean> = this.store.select(state => state.courses.isSingleCourseLoading);
   @Input() editable: boolean = true;
   @Output() courseAction = new EventEmitter<{action: string, payload:{courseId: string}}>();
   currentCourseId: string = '';
@@ -46,13 +50,14 @@ export class CoursesComponent implements OnInit {
   showModal: boolean = false;
   deletedCourseId: string = '';
 
-  constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private userStoreService: UserStoreService, private authService: AuthService, private coursesService: CoursesService ) {
+  constructor(private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private userStoreService: UserStoreService, private authService: AuthService, private coursesService: CoursesService,   private store: Store<AppState>, private coursesStateFacade: CoursesStateFacade ) {
   }
 
   ngOnInit() {
     console.log('CoursesComponent ngOnInit');
-    this.coursesStoreService.getAll();
-    this.getCourses();
+    // this.coursesStoreService.getAll();
+    this.coursesStateFacade.getAllCourses();
+    this.courses$ = this.coursesStateFacade.courses$;
     this.authService.isAuthorized$.subscribe(
       (isAuthorized: boolean) => {
         this.isLogged = isAuthorized;
@@ -74,11 +79,9 @@ export class CoursesComponent implements OnInit {
         break;
       case 'search':
         if(payload.title) {
-        this.coursesStoreService.getFiltered(payload.title.toLocaleLowerCase());
-        this.getCourses();
+        this.coursesStateFacade.getFilteredCourses(payload.title.toLocaleLowerCase())
         } else {
-          this.coursesStoreService.getAll();
-          this.getCourses();
+          this.coursesStateFacade.getAllCourses();
         }
         break;
     }
@@ -110,7 +113,7 @@ export class CoursesComponent implements OnInit {
 
   onDeleteConfirmed(result: boolean) {
     if (result) {
-      this.coursesStoreService.deleteCourse(this.deletedCourseId);
+      this.coursesStateFacade.deleteCourse(this.deletedCourseId);
       this.deletedCourseId = ''
     }
     this.showModal = false;

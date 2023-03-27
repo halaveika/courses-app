@@ -2,15 +2,15 @@ import { createAction, props } from '@ngrx/store';
 import { Course } from 'src/app/shared/models/course-type';
 
 export const requestAllCourses = createAction('[Courses] Request All');
-export const requestAllCoursesSuccess = createAction('[Courses] Request All Success', props<{ courses: Course[] }>());
+export const requestAllCoursesSuccess = createAction('[Courses] Request All Success', props<{ result: Course[] }>());
 export const requestAllCoursesFail = createAction('[Courses] Request All Fail', props<{ error: any }>());
 
 export const requestSingleCourse = createAction('[Courses] Request Single', props<{ id: string }>());
-export const requestSingleCourseSuccess = createAction('[Courses] Request Single Success', props<{ course: Course }>());
+export const requestSingleCourseSuccess = createAction('[Courses] Request Single Success', props<{ result: Course }>());
 export const requestSingleCourseFail = createAction('[Courses] Request Single Fail', props<{ error: any }>());
 
 export const requestFilteredCourses = createAction('[Courses] Request Filtered', props<{ keyword: string }>());
-export const requestFilteredCoursesSuccess = createAction('[Courses] Request Filtered Success', props<{ courses: Course[] }>());
+export const requestFilteredCoursesSuccess = createAction('[Courses] Request Filtered Success', props<{ result: Course[] }>());
 export const requestFilteredCoursesFail = createAction('[Courses] Request Filtered Fail', props<{ error: any }>());
 
 export const requestDeleteCourse = createAction('[Courses] Request Delete', props<{ id: string }>());

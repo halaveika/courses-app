@@ -2,11 +2,11 @@ import { ActionReducerMap } from "@ngrx/store";
 import { coursesReducer, CoursesState } from "./courses/courses.reducer";
 import { CoursesEffects } from "./courses/courses.effects";
 
-export interface State {
+export interface AppState {
   courses: CoursesState;
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<AppState> = {
   courses: coursesReducer
 };
 

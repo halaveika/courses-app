@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, map, Observable,Subscription,tap, of, switchMap, EMPTY } from 'rxjs';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
@@ -10,6 +11,8 @@ import { emptyCourse } from 'src/app/shared/mocks/mockedCourseList';
 import { AuthorService } from 'src/app/services/author.service';
 import { UserStoreService } from 'src/app/user/services/user-store.service';
 import { Author } from '../../models/author-type';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
+import { AppState } from 'src/app/store';
 
 @Component({
   selector: 'app-course-form',
@@ -20,13 +23,13 @@ export class CourseFormComponent implements OnInit {
   allAuthors : Author[] = [];
   courseAuthors: Author[] =[];
   authorsSubscription!: Subscription;
-  course:Course = emptyCourse;
+  course: Observable<Course | null> = this.store.select(state => state.courses.course);
   courseId: string = '';
   courseForm!: FormGroup;
   submitted = false;
   authors: FormArray = this.fb.array([]);
   newAuthor: string ='';
-  constructor(public fb: FormBuilder, public library: FaIconLibrary, private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private authorService: AuthorService, private userStoreService: UserStoreService) {
+  constructor(public fb: FormBuilder, public library: FaIconLibrary, private coursesStoreService: CoursesStoreService,private router: Router, private route: ActivatedRoute, private authorService: AuthorService, private userStoreService: UserStoreService,  private coursesStateFacade: CoursesStateFacade, private store: Store<AppState>, ) {
     library.addIconPacks(fas);
   }
 
@@ -61,12 +64,10 @@ export class CourseFormComponent implements OnInit {
     });
 
     if (this.courseId) {
-      this.coursesStoreService.getCourse(this.courseId).subscribe(
-        result => {
-          this.course = result;
-          console.log('this.course.authors',this.course.authors);
-          console.log('this.allAuthors',this.allAuthors);
-          this.courseAuthors = this.course.authors.map(id => this.allAuthors.find( a => a.id === id)) as Author[];
+      this.coursesStateFacade.getSingleCourse(this.courseId);
+      this.course.subscribe(
+        (result:Course | null) => {
+          this.courseAuthors = result!.authors.map(id => this.allAuthors.find( a => a.id === id)) as Author[];
           console.log('this.courseAuthors',this.courseAuthors);
           const authorForms = this.courseAuthors.map(author => this.fb.group({ name: [author.name] }));
           console.log('authorForms',authorForms);
@@ -75,9 +76,9 @@ export class CourseFormComponent implements OnInit {
           })));
           this.courseForm.setControl('authors', this.fb.array(authorForms));
           this.courseForm.patchValue({
-            title: this.course.title,
-            description: this.course.description,
-            duration: this.course.duration,
+            title: result!.title,
+            description: result!.description,
+            duration: result!.duration,
           });
         }
       );
@@ -98,7 +99,7 @@ export class CourseFormComponent implements OnInit {
             if (result) {
               console.log('onSubmit added authors',result);
               courseData.authors = result.map((e: { id: string }) => e.id);
-              return this.coursesStoreService.editCourse(this.courseId, courseData);
+              this.coursesStateFacade.editCourse(this.courseId, courseData);
             }
             return of(EMPTY);
           }),
@@ -115,7 +116,7 @@ export class CourseFormComponent implements OnInit {
           switchMap((result: Author[]) => {
             if (result) {
               courseData.authors = result.map((e: { id: string }) => e.id);
-              return this.coursesStoreService.createCourse(courseData);
+              this.coursesStateFacade.createCourse(courseData);
             }
             return of(EMPTY);
           })

@@ -8,6 +8,7 @@ import { CoursesService } from '../../services/courses.service';
 import * as CoursesActions from './courses.actions';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { CoursesStateFacade } from './courses.facade';
+import { Course } from 'src/app/shared/models/course-type';
 
 @Injectable()
 export class CoursesEffects {
@@ -24,7 +25,7 @@ export class CoursesEffects {
       ofType(CoursesActions.requestAllCourses),
       mergeMap(() => this.coursesService.getAll()
         .pipe(
-          map(courses => CoursesActions.requestAllCoursesSuccess({ courses })),
+          map(({result}:{successful:boolean, result: Course[]}) => CoursesActions.requestAllCoursesSuccess({result})),
           catchError((error) => of(CoursesActions.requestAllCoursesFail(error)))
         )
       )
@@ -34,10 +35,9 @@ export class CoursesEffects {
   filteredCourses$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoursesActions.requestFilteredCourses),
-      mergeMap(({ keyword }) => this.coursesStateFacade.allCourses$
+      mergeMap(({keyword}) => this.coursesService.searchCourses(keyword)
         .pipe(
-          map(courses => courses.filter(course => course.title.toLowerCase().includes(keyword.toLowerCase()))),
-          map(courses => CoursesActions.requestFilteredCoursesSuccess({ courses }))
+          map(({result}:{successful:boolean, result: Course[]}) => CoursesActions.requestFilteredCoursesSuccess({ result }))
         )
       )
     )
@@ -48,7 +48,7 @@ export class CoursesEffects {
       ofType(CoursesActions.requestSingleCourse),
       mergeMap(({ id }) => this.coursesService.getCourse(id)
         .pipe(
-          map(course => CoursesActions.requestSingleCourseSuccess({ course })),
+          map(({result}:{successful:boolean, result: Course})  => CoursesActions.requestSingleCourseSuccess({ result })),
           catchError((error) => of(CoursesActions.requestSingleCourseFail(error)))
         )
       )

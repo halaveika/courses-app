@@ -29,9 +29,9 @@ export const coursesReducer = createReducer(
     isAllCoursesLoading: true,
     errorMessage: null,
   })),
-  on(CoursesActions.requestAllCoursesSuccess, (state, { courses }) => ({
+  on(CoursesActions.requestAllCoursesSuccess, (state, {result}) => ({
     ...state,
-    allCourses: courses,
+    allCourses: result,
     isAllCoursesLoading: false,
     errorMessage: null,
   })),
@@ -47,9 +47,9 @@ export const coursesReducer = createReducer(
     isSingleCourseLoading: true,
     errorMessage: null,
   })),
-  on(CoursesActions.requestSingleCourseSuccess, (state, { course }) => ({
+  on(CoursesActions.requestSingleCourseSuccess, (state, { result }) => ({
     ...state,
-    course,
+    course:result,
     isSingleCourseLoading: false,
     errorMessage: null,
   })),
@@ -66,9 +66,9 @@ export const coursesReducer = createReducer(
     isSearchState: true,
     errorMessage: null,
   })),
-  on(CoursesActions.requestFilteredCoursesSuccess, (state, { courses }) => ({
+  on(CoursesActions.requestFilteredCoursesSuccess, (state, { result }) => ({
     ...state,
-    allCourses: courses,
+    allCourses: result,
     isAllCoursesLoading: false,
     errorMessage: null,
   })),

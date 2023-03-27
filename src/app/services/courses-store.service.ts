@@ -27,7 +27,7 @@ export class CoursesStoreService {
     this.isLoading$$.next(true);
     this.coursesService.getAll().subscribe(
       (courses:CoursesResponse) => {
-        const result = courses.result.map((course) => {return {...course, creationDate: this.formatDate(course.creationDate as string)}})
+        const result = courses.result.map((course) => {return {...course, creationDate: course.creationDate}})
         this.courses$$.next(result);
         this.isLoading$$.next(false);
       },
@@ -42,7 +42,7 @@ export class CoursesStoreService {
     this.isLoading$$.next(true);
     this.coursesService.searchCourses(keyword).subscribe(
       (courses:CoursesResponse) => {
-        const result = courses.result.map((course) => {return {...course, creationDate: this.formatDate(course.creationDate as string)}})
+        const result = courses.result.map((course) => {return {...course, creationDate: course.creationDate}})
         this.courses$$.next(result);
         this.isLoading$$.next(false);
       },

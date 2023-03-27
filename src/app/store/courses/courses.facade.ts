@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Course } from 'src/app/shared/models/course-type';
-import { State } from '../index';
+import { AppState } from '../index';
 import {
   requestAllCourses,
   requestSingleCourse,
@@ -32,7 +32,7 @@ export class CoursesStateFacade {
   course$: Observable<Course>;
   errorMessage$: Observable<string>;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<AppState>) {
     this.isAllCoursesLoading$ = this.store.select(isAllCoursesLoadingSelector);
     this.isSingleCourseLoading$ = this.store.select(isSingleCourseLoadingSelector);
     this.isSearchingState$ = this.store.select(isSearchingStateSelector);
