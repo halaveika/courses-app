@@ -1,0 +1,59 @@
+@import 'src/app/shared/styles/styles';
+
+:host {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.app-plate {
+  width: fit-content;
+  min-height: auto;
+  margin: 0 auto;
+  .form__control {
+    position: relative;
+  }
+  .registration-form {
+    max-width: 260px;
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .form__text {
+      margin:  10px auto 0;
+      strong {
+        cursor: pointer;
+        &:hover {
+          color: #016486;
+        }
+      }
+    }
+  }
+}
+
+.text-align-center {
+  margin: 10px auto;
+}
+
+.form__action {
+  margin:  0 auto;
+}
+
+button[type="submit"] {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 13px 13px;
+  gap: 10px;
+  background: #007298;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 auto;
+  cursor: pointer;
+  &:hover {
+      background: #016486;
+  }
+}

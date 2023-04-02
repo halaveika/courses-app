@@ -1,0 +1,22 @@
+<app-header>
+  <span class="app-header__user"> {{ isLogged ? user : '' }} </span>
+  <app-button [label]="isLogged ? 'Logout' : 'Login'" (click)="isLogged ? onLogout() : onLogin()"></app-button>
+</app-header>
+<router-outlet></router-outlet>
+<div class="app-root">
+  <!-- Search component -->
+  <!-- <app-search placeholder="Search courses" (searchEvent)="onCourseActionExecut($event)"></app-search> -->
+  <!-- Info component -->
+  <!-- <app-courses *ngIf="isLogged"  (courseAction)="onCourseActionExecut($event)" [courses]="filteredCourses">
+  </app-courses> -->
+  <!-- Course Card component -->
+  <!-- <app-course-card></app-course-card> -->
+  <!-- Login Form component -->
+  <!-- <app-login-form *ngIf="!isLogged && isRegistred" (loginSubmitted)="onLoginActions($event)" (register)="onLoginViews($event)"></app-login-form> -->
+  <!-- Login Form component -->
+  <!-- <app-registration-form *ngIf="!isRegistred && !isLogged" (loginSubmitted)="onLoginActions($event)" (login)="onLoginViews($event)"></app-registration-form> -->
+  <!-- Login Form component -->
+  <!-- <app-course-form></app-course-form> -->
+  <!-- Modal component -->
+  <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
+</div>

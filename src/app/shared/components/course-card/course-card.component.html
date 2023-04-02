@@ -1,0 +1,24 @@
+<div class="course-card">
+    <div class="course-card__description">
+      <!-- Replace ::text:: with your code -->
+      <div class="course-card__description-title">{{ title }}</div>
+      <div class="course-card__description-text">{{ description }}</div>
+    </div>
+    <div class="course-card__info">
+        <div class="course-card__info-text">
+            <div *ngIf="id" >
+              <b>Id: </b>
+              {{ id }}
+            </div>
+            <div>
+              <b>Authors: </b>
+              {{ authors }}
+            </div>
+            <div><b>Duration: </b>{{ duration | duration }}</div>
+            <div><b>Created: </b>{{ creationDate | creationDate }}</div>
+        </div>
+        <div class="course-card__info-actions">
+          <ng-content></ng-content>
+        </div>
+    </div>
+</div>

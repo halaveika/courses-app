@@ -1,0 +1,49 @@
+<h2 class="text-align-center">Login</h2>
+<div class="app-plate">
+  <div class="login-form">
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+      <div>
+        <div class="form__control">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            required
+            placeholder="Your email"
+            [(ngModel)]="loginModel.email"
+            name="email"
+            #email="ngModel"
+            appEmailValidator
+          />
+          <div *ngIf="loginForm.submitted">
+            <div *ngIf="loginForm.controls['email'].errors?.['required']">Email is required</div>
+            <div *ngIf="loginForm.controls['email'].errors?.['invalidEmail']">Invalid email</div>
+          </div>
+        </div>
+        <div class="form__control">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Your password"
+            [(ngModel)]="loginModel.password"
+            name="password"
+            required
+            togglePassword
+          />
+          <div *ngIf="loginForm.submitted || loginForm.controls['password']?.touched">
+            <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is required</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="form__action">
+          <button type="submit" [disabled]="!loginForm.form.valid">login</button>
+        </div>
+        <div class="form__text">
+          If you don't have an account you may <strong (click)="onRegister()">Registration</strong>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

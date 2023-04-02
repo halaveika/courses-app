@@ -1,0 +1,64 @@
+@import "src/app/shared/styles/variables/colors";
+
+.course-card {
+  padding: 32px;
+  box-shadow: 0 0 4px rgb(0 0 0 / 25%);
+  border-radius: 4px;
+  border-left: 8px solid $color-dark-gray;
+  display: flex;
+  justify-content: space-between;
+  margin: 32px 0;
+  min-height: 170px;
+  background-color: $color-white;
+
+  &__description {
+    flex: 2;
+    border-right: 4px solid rgb(0 0 0 / 25%);
+
+    &-title {
+      font-weight: bold;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 50px;
+
+    &-text {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      &>div {
+        margin-bottom: 5%;
+      }
+    }
+
+    &-actions {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      max-width: 320px;
+    }
+  }
+
+  @media (max-width:768px) {
+    padding: 12px;
+    flex-direction: column;
+
+    &__info {
+      margin-left: 0;
+
+      &-actions {
+        max-width: 100%;
+        flex-wrap: nowrap;
+      }
+    }
+  }
+}

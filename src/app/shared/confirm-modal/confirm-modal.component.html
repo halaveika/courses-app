@@ -1,0 +1,16 @@
+<div class="confirm-modal">
+  <div class="modal-content">
+    <fa-icon class="close-btn" icon="close" (click)="modalResult.emit(false)"></fa-icon>
+    <h2>{{ title }}</h2>
+    <hr>
+    <p>{{ message }}</p>
+    <div class="modal-footer">
+      <app-button [label]="okButtonText" (click)="modalResult.emit(true)"></app-button>
+      <app-button [label]="cancelButtonText" (click)="modalResult.emit(false)"></app-button>
+    </div>
+  </div>
+</div>
+
+
+
+
